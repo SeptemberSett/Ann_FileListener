@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mao.test.dao.PPProDocPathMapper" >
+    <resultMap type="com.mao.test.entity.PPProDocPathDTO" id="BaseResultMap">
+        <result property="id" column="id" />
+        <result property="file_Name" column="file_Name"  jdbcType="VARCHAR"/>
+        <result property="file_Path" column="file_Path" jdbcType="VARCHAR"/>
+        <result property="file_Type" column="file_Type" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="revision" column="revision" jdbcType="VARCHAR"/>
+        <result property="create_By" column="create_By" jdbcType="VARCHAR"/>
+        <result property="create_Date" column="create_Date" jdbcType="TIMESTAMP"/>
+        <result property="update_By" column="update_By" jdbcType="VARCHAR"/>
+        <result property="update_Date" column="update_Date" jdbcType="TIMESTAMP"/>
+        <result property="delete_By" column="delete_By" jdbcType="VARCHAR"/>
+        <result property="delete_Date" column="delete_Date" jdbcType="TIMESTAMP"/>
+        <result property="downLoad_Doc_Address" column="downLoad_Doc_Address" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 新增记录 -->
+    <insert id="insertOne" parameterType="Object" >
+<!--        <selectKey resultType="int" order="BEFORE" keyProperty="id">-->
+<!--            select id.nextval as id from PPPRODOCPATHDTO-->
+<!--        </selectKey>-->
+        insert into PPPRODOCPATHDTO
+        (
+            id,
+            file_Name,
+            file_Path,
+            file_Type,
+            status,
+            remarks,
+            revision,
+            create_By,
+            create_Time,
+            update_By,
+            update_Time,
+            delete_By,
+            delete_Time,
+            downLoad_Doc_Address
+        )
+        values
+        (
+            #{id, jdbcType=VARCHAR},
+            #{file_Name,jdbcType=VARCHAR},
+            #{file_Path,jdbcType=VARCHAR},
+            #{file_Type,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{remarks,jdbcType=VARCHAR},
+            #{revision,jdbcType=VARCHAR},
+            #{create_By,jdbcType=VARCHAR},
+            #{create_Time,jdbcType=TIMESTAMP},
+            #{update_By,jdbcType=VARCHAR},
+            #{update_Time,jdbcType=TIMESTAMP},
+            #{delete_By,jdbcType=VARCHAR},
+            #{delete_Time,jdbcType=TIMESTAMP},
+            #{downLoad_Doc_Address,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 根据file_Name修改记录-->
+    <update id="updateByName" parameterType="Object" >
+        update PPPRODOCPATHDTO
+        set file_Path=#{file_Path},
+            file_Type=#{file_Type},
+            status=#{status},
+            remarks=#{remarks},
+            revision=#{revision},
+            create_By=#{create_By},
+            create_Time=#{create_Time},
+            update_By=#{update_By},
+            update_Time=#{update_Time},
+            downLoad_Doc_Address=#{downLoad_Doc_Address}
+        where file_Name=#{file_Name} and status = '1'
+    </update>
+
+    <!-- 修改文件删除状态 -->
+    <update id="deleteProdocInfo">
+       update PPPRODOCPATHDTO set
+       delete_Time = #{delete_Time},
+       STATUS = 0,
+       delete_By = #{delete_By}
+       where STATUS=1 AND file_Name=#{file_Name}
+   </update>
+
+    <!-- 根据id查询 -->
+    <select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+        select *
+        from PPPRODOCPATHDTO where id = #{id}
+    </select>
+
+    <!-- 根据Name查询 -->
+    <select id="queryByName" resultMap="BaseResultMap" parameterType="String">
+        select *
+        from PPPRODOCPATHDTO where file_Name = #{file_Name} and status = '1'
+    </select>
+
+</mapper>
